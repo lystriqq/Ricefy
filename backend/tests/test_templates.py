@@ -60,9 +60,9 @@ class TestHyprlandTemplateRenders:
     def test_monitor_uses_own_function(self, jinja_env, default_config):
         output = render_hyprland(jinja_env, default_config)
         assert "hl.monitor(" in output
-        assert 'output = ""' in output
-        assert "resolution = " in output
-        assert "position = " in output
+        assert 'output   = ""' in output
+        assert 'mode     = "preferred"' in output
+        assert 'position = "auto"' in output
 
 
 # ─── Section: general ────────────────────────────────────────────────────────
