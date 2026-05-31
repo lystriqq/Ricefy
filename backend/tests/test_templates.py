@@ -55,6 +55,13 @@ class TestHyprlandTemplateRenders:
         assert "hl.bind(" in output
         assert "hl.window_rule(" in output
         assert "hl.on(" in output
+        assert "hl.monitor(" in output
+
+    def test_monitor_uses_own_function(self, jinja_env, default_config):
+        output = render_hyprland(jinja_env, default_config)
+        assert "hl.monitor(" in output
+        assert "resolution = " in output
+        assert "position = " in output
 
 
 # ─── Section: general ────────────────────────────────────────────────────────

@@ -376,6 +376,36 @@ class TestNextSteps:
         )))
         assert "reboot" in out
 
-    def test_hyprland_start_hint_when_no_sddm(self, jinja_env):
+    def test_reboot_hint_when_no_sddm(self, jinja_env):
         out = render(jinja_env, _base())
-        assert "Hyprland" in out
+        assert "reboot" in out
+
+    def test_no_direct_hyprland_launch_hint(self, jinja_env):
+        out = render(jinja_env, _base())
+        assert "Start Hyprland: " not in out
+
+
+class TestAutostartTTY1:
+    def test_autostart_added_for_hyprlock(self, jinja_env):
+        out = render(jinja_env, _base())
+        assert "start-hyprland" in out
+        assert "XDG_VTNR" in out
+
+    def test_autostart_added_for_swaylock(self, jinja_env):
+        from app.models.rice_config import SwaylockConfig
+        out = render(jinja_env, _base(lockscreen=SwaylockConfig(
+            kind="swaylock", theme="simple", color="#1d2021", blur=True,
+            clock=True, layout="center", layout_y="center",
+        )))
+        assert "start-hyprland" in out
+        assert "XDG_VTNR" in out
+
+    def test_no_autostart_for_sddm(self, jinja_env):
+        from app.models.rice_config import SddmConfig
+        out = render(jinja_env, _base(lockscreen=SddmConfig(
+            kind="sddm", theme="simple", background_color="#1d2021",
+            font="Geist Sans", show_logo=True, blur=False, blur_size=6,
+            layout="center", layout_y="center",
+        )))
+        assert "start-hyprland" not in out
+        assert "XDG_VTNR" not in out

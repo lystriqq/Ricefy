@@ -249,6 +249,24 @@ sudo systemctl enable sddm
 ok "SDDM enabled (will start on next boot)."
 {% endif %}
 
+# ─── Autostart depuis TTY1 (non-SDDM) ───────────────────────────────────────
+
+{% if config.lockscreen.kind != "sddm" %}
+info "Configuring Hyprland autostart from TTY1…"
+for PROFILE in "$HOME/.bash_profile" "$HOME/.zprofile"; do
+    if ! grep -q "start-hyprland" "$PROFILE" 2>/dev/null; then
+        cat >> "$PROFILE" <<'AUTOSTART'
+
+# Start Hyprland on TTY1
+if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = "1" ]; then
+    exec start-hyprland
+fi
+AUTOSTART
+        ok "Hyprland autostart added to $PROFILE"
+    fi
+done
+{% endif %}
+
 # ─── Done ────────────────────────────────────────────────────────────────────
 
 echo ""
@@ -258,11 +276,7 @@ echo -e "${BOLD}${GREEN}║   Rice installed successfully!       ║${NC}"
 echo -e "${BOLD}${GREEN}╚══════════════════════════════════════╝${NC}"
 echo ""
 echo -e "  ${BOLD}Next steps:${NC}"
-{% if config.lockscreen.kind == "sddm" %}
-echo -e "  1. Reboot to start SDDM: ${YELLOW}sudo reboot${NC}"
-{% else %}
-echo -e "  1. Start Hyprland: ${YELLOW}Hyprland${NC}"
-{% endif %}
+echo -e "  1. Reboot: ${YELLOW}sudo reboot${NC}"
 echo -e "  2. Reload Waybar: ${YELLOW}Super + Shift + R${NC} (if already running)"
 echo -e "  3. Open terminal: ${YELLOW}Super + T${NC}"
 echo -e "  4. Open launcher: ${YELLOW}Super + R${NC}"
