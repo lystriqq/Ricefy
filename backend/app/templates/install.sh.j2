@@ -30,16 +30,16 @@
   {%- set _launcher_pacman = ["wofi"] -%}
   {%- set _launcher_aur    = [] -%}
 {%- endif -%}
-{#- Lockscreen -#}
-{%- if config.lockscreen.kind == "sddm" -%}
-  {%- set _lock_pacman = ["sddm"] -%}
-  {%- set _lock_aur    = [] -%}
-{%- elif config.lockscreen.kind == "hyprlock" -%}
+{#- Lockscreen (session lock — SDDM is always installed separately as display manager) -#}
+{%- if config.lockscreen.kind == "hyprlock" -%}
   {%- set _lock_pacman = [] -%}
   {%- set _lock_aur    = ["hyprlock"] -%}
-{%- else -%}
+{%- elif config.lockscreen.kind == "swaylock" -%}
   {%- set _lock_pacman = ["swaylock"] -%}
   {%- set _lock_aur    = ["swaylock-effects-git"] -%}
+{%- else -%}
+  {%- set _lock_pacman = [] -%}
+  {%- set _lock_aur    = [] -%}
 {%- endif -%}
 {#- Wallpaper tool -#}
 {%- if config.wm.wallpaper_tool == "swaybg" -%}
@@ -94,9 +94,11 @@ PACMAN_PKGS=(
     # Notification daemon
     dunst
     libnotify
+    # Display manager (always)
+    sddm
     # Launcher
     {{ (_launcher_pacman) | join(' ') }}
-    # Lockscreen / display manager
+    # Session lockscreen
 {%- for p in _lock_pacman %}
     {{ p }}
 {%- endfor %}
@@ -244,28 +246,8 @@ info "Enabling system services…"
 sudo systemctl enable --now NetworkManager
 ok "NetworkManager enabled."
 
-{% if config.lockscreen.kind == "sddm" %}
 sudo systemctl enable sddm
 ok "SDDM enabled (will start on next boot)."
-{% endif %}
-
-# ─── Autostart depuis TTY1 (non-SDDM) ───────────────────────────────────────
-
-{% if config.lockscreen.kind != "sddm" %}
-info "Configuring Hyprland autostart from TTY1…"
-for PROFILE in "$HOME/.bash_profile" "$HOME/.zprofile"; do
-    if ! grep -q "start-hyprland" "$PROFILE" 2>/dev/null; then
-        cat >> "$PROFILE" <<'AUTOSTART'
-
-# Start Hyprland on TTY1
-if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = "1" ]; then
-    exec start-hyprland
-fi
-AUTOSTART
-        ok "Hyprland autostart added to $PROFILE"
-    fi
-done
-{% endif %}
 
 # ─── Done ────────────────────────────────────────────────────────────────────
 

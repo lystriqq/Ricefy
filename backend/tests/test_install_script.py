@@ -176,7 +176,7 @@ class TestLockscreenPackage:
             layout="center", layout_y="center",
         )))
         assert "hyprlock" in out
-        assert "sddm" not in out
+        assert "sddm" in out  # always installed as display manager
 
     def test_swaylock_in_packages(self, jinja_env):
         out = render(jinja_env, _base(lockscreen=SwaylockConfig(
@@ -219,24 +219,24 @@ class TestLockscreenPackage:
 
 
 class TestSddmService:
-    def test_sddm_enabled_when_sddm_lockscreen(self, jinja_env):
-        out = render(jinja_env, _base(lockscreen=SddmConfig(
-            kind="sddm", theme="simple", background_color="#1d2021",
-            font="Geist Sans", show_logo=True, blur=False, blur_size=6,
+    def test_sddm_always_enabled(self, jinja_env):
+        out = render(jinja_env, _base())
+        assert "systemctl enable sddm" in out
+
+    def test_sddm_always_enabled_with_hyprlock(self, jinja_env):
+        out = render(jinja_env, _base(lockscreen=HyprlockConfig(
+            kind="hyprlock", theme="t", background_color="#1d2021",
+            blur=True, blur_size=10, clock=True, date_format="%H:%M",
             layout="center", layout_y="center",
         )))
         assert "systemctl enable sddm" in out
 
-    def test_sddm_not_enabled_when_hyprlock(self, jinja_env):
-        out = render(jinja_env, _base())
-        assert "systemctl enable sddm" not in out
-
-    def test_sddm_not_enabled_when_swaylock(self, jinja_env):
+    def test_sddm_always_enabled_with_swaylock(self, jinja_env):
         out = render(jinja_env, _base(lockscreen=SwaylockConfig(
             kind="swaylock", theme="minimal", color="#1d2021",
             blur=True, clock=True, layout="center", layout_y="center",
         )))
-        assert "systemctl enable sddm" not in out
+        assert "systemctl enable sddm" in out
 
     def test_networkmanager_always_enabled(self, jinja_env):
         out = render(jinja_env, _base())
@@ -385,27 +385,19 @@ class TestNextSteps:
         assert "Start Hyprland: " not in out
 
 
-class TestAutostartTTY1:
-    def test_autostart_added_for_hyprlock(self, jinja_env):
+class TestSddmAlwaysPresent:
+    def test_sddm_in_pacman_with_hyprlock(self, jinja_env):
         out = render(jinja_env, _base())
-        assert "start-hyprland" in out
-        assert "XDG_VTNR" in out
+        assert "sddm" in out
 
-    def test_autostart_added_for_swaylock(self, jinja_env):
+    def test_sddm_in_pacman_with_swaylock(self, jinja_env):
         from app.models.rice_config import SwaylockConfig
         out = render(jinja_env, _base(lockscreen=SwaylockConfig(
             kind="swaylock", theme="simple", color="#1d2021", blur=True,
             clock=True, layout="center", layout_y="center",
         )))
-        assert "start-hyprland" in out
-        assert "XDG_VTNR" in out
+        assert "sddm" in out
 
-    def test_no_autostart_for_sddm(self, jinja_env):
-        from app.models.rice_config import SddmConfig
-        out = render(jinja_env, _base(lockscreen=SddmConfig(
-            kind="sddm", theme="simple", background_color="#1d2021",
-            font="Geist Sans", show_logo=True, blur=False, blur_size=6,
-            layout="center", layout_y="center",
-        )))
-        assert "start-hyprland" not in out
+    def test_no_tty_autostart_in_script(self, jinja_env):
+        out = render(jinja_env, _base())
         assert "XDG_VTNR" not in out
