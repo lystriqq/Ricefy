@@ -70,7 +70,7 @@ Rectangle {
 
 {% if config.lockscreen.show_logo %}
             // Logo / title
-            Text {
+            Label {
                 Layout.alignment: Qt.AlignHCenter
                 text: "{{ config.name }}"
                 color: "{{ config.colors.accent }}"
@@ -140,7 +140,7 @@ Rectangle {
             }
 
             // Error label
-            Text {
+            Label {
                 id: errorLabel
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
