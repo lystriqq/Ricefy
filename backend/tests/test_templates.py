@@ -458,14 +458,14 @@ class TestWaybarCSSRenders:
         out = render_waybar_css(jinja_env, default_config)
         assert len(out) > 100
 
-    def test_contains_css_variables(self, jinja_env, default_config):
+    def test_contains_gtkcss_color_definitions(self, jinja_env, default_config):
         out = render_waybar_css(jinja_env, default_config)
-        assert ":root" in out
-        assert "--background" in out
-        assert "--accent" in out
-        assert "--foreground" in out
-        assert "--border" in out
-        assert "--surface" in out
+        assert "@define-color background" in out
+        assert "@define-color accent" in out
+        assert "@define-color foreground" in out
+        assert "@define-color border" in out
+        assert "@define-color surface" in out
+        assert ":root" not in out
 
 
 class TestWaybarCSSColors:
@@ -499,9 +499,10 @@ class TestWaybarCSSColors:
         out = render_waybar_css(jinja_env, default_config)
         assert f"{default_config.font.size}px" in out
 
-    def test_bar_height_injected(self, jinja_env, default_config):
+    def test_margin_derived_from_bar_height(self, jinja_env, default_config):
         out = render_waybar_css(jinja_env, default_config)
-        assert f"{default_config.bar.height}px" in out
+        margin = int(default_config.bar.height * 0.12)
+        assert f"{margin}px" in out
 
 
 class TestWaybarCSSStructure:
@@ -552,12 +553,12 @@ class TestWaybarCSSStructure:
     def test_radius_derived_from_wm(self, jinja_env, default_config):
         default_config.wm.rounding = 16
         out = render_waybar_css(jinja_env, default_config)
-        assert "--radius:      8px" in out  # min(16//2=8, 8) = 8
+        assert "border-radius:    8px" in out  # min(16//2=8, 8) = 8
 
     def test_radius_small_rounding(self, jinja_env, default_config):
         default_config.wm.rounding = 4
         out = render_waybar_css(jinja_env, default_config)
-        assert "--radius:      2px" in out  # min(4//2=2, 8) = 2
+        assert "border-radius:    2px" in out  # min(4//2=2, 8) = 2
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
