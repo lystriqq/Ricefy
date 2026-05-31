@@ -23,7 +23,7 @@
 /* ─── Bar ────────────────────────────────────────────────────────────────── */
 
 #waybar {
-    background-color: @background;
+    background-color: @surface;
     color:            @foreground;
     border-{% if config.bar.position == "top" %}bottom{% else %}top{% endif %}: 1px solid @border;
     font-family:      "{{ config.font.mono_family }}", "Symbols Nerd Font", monospace;
@@ -56,7 +56,7 @@
 #window,
 #submap,
 #taskbar {
-    background-color: @surface;
+    background-color: @background;
     color:            @foreground;
     padding:          0 12px;
     margin:           {{ _margin }}px 2px;
@@ -84,7 +84,7 @@
 /* ─── Workspaces ─────────────────────────────────────────────────────────── */
 
 #workspaces {
-    background-color: @surface;
+    background-color: @background;
     border-radius:    {{ _radius }}px;
     margin:           {{ _margin }}px 2px;
     padding:          0 4px;
@@ -164,7 +164,7 @@
 /* ─── Power button ───────────────────────────────────────────────────────── */
 
 #custom-power {
-    background-color: @surface;
+    background-color: @background;
     color:            @foreground;
     padding:          0 14px;
     margin-right:     4px;
@@ -179,7 +179,7 @@
 /* ─── Tray ───────────────────────────────────────────────────────────────── */
 
 #tray {
-    background-color: @surface;
+    background-color: @background;
     border-radius:    {{ _radius }}px;
     padding:          0 8px;
 }

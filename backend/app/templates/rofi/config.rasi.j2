@@ -22,8 +22,6 @@ configuration {
     sidebar-mode:        false;
 }
 
-@theme "default"
-
 /* ─── Global variables ───────────────────────────────────────────────────── */
 
 * {
@@ -65,16 +63,18 @@ mainbox {
 inputbar {
     background-color:    @surface-color;
     text-color:          @foreground;
+    border:              0;
     border-radius:       @radius;
     padding:             8px 12px;
     spacing:             8px;
-    children:            [prompt, entry];
+    children:            [entry, prompt];
 }
 
 prompt {
     background-color:    transparent;
     text-color:          @accent-color;
     padding:             0px;
+    expand:              false;
 }
 
 entry {
@@ -103,6 +103,7 @@ element {
     border-radius:       @radius;
     spacing:             8px;
     orientation:         horizontal;
+    min-height:          28px;
 }
 
 element normal.normal {
