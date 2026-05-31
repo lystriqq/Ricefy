@@ -249,6 +249,17 @@ ok "NetworkManager enabled."
 sudo systemctl enable sddm
 ok "SDDM enabled (will start on next boot)."
 
+{% if config.lockscreen.kind != "sddm" %}
+# SDDM autologin — hyprlock/swaylock gérera le login visuellement
+sudo mkdir -p /etc/sddm.conf.d
+sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
+[Autologin]
+User=${USER}
+Session=hyprland
+EOF
+ok "SDDM autologin configuré pour ${USER} — {{ config.lockscreen.kind }} sera l'écran de login"
+{% endif %}
+
 # ─── Done ────────────────────────────────────────────────────────────────────
 
 echo ""

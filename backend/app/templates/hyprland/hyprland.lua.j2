@@ -20,6 +20,11 @@ hl.monitor({
 -- ─── Autostart ───────────────────────────────────────────────────────────────
 
 hl.on("hyprland.start", function ()
+{% if config.lockscreen.kind == "hyprlock" %}
+    hl.exec_cmd("hyprlock")
+{% elif config.lockscreen.kind == "swaylock" %}
+    hl.exec_cmd("swaylock -f")
+{% endif %}
     hl.exec_cmd("waybar")
     hl.exec_cmd("dunst")
 {% if config.wm.wallpaper_image %}

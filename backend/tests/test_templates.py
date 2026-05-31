@@ -261,6 +261,30 @@ class TestAutostart:
         output = render_hyprland(jinja_env, default_config)
         assert "swaybg -i /home/user/wall.jpg" in output
 
+    def test_hyprlock_exec_on_start(self, jinja_env, default_config):
+        output = render_hyprland(jinja_env, default_config)  # default = hyprlock
+        assert 'exec_cmd("hyprlock")' in output
+
+    def test_swaylock_exec_on_start(self, jinja_env, default_config):
+        from app.models.rice_config import SwaylockConfig
+        default_config.lockscreen = SwaylockConfig(
+            kind="swaylock", theme="minimal", color="#1d2021",
+            blur=True, clock=True, layout="center", layout_y="center",
+        )
+        output = render_hyprland(jinja_env, default_config)
+        assert 'exec_cmd("swaylock -f")' in output
+
+    def test_no_lock_exec_for_sddm(self, jinja_env, default_config):
+        from app.models.rice_config import SddmConfig
+        default_config.lockscreen = SddmConfig(
+            kind="sddm", theme="simple", background_color="#1d2021",
+            font="Geist Sans", show_logo=True, blur=False, blur_size=6,
+            layout="center", layout_y="center",
+        )
+        output = render_hyprland(jinja_env, default_config)
+        assert 'exec_cmd("hyprlock")' not in output
+        assert 'exec_cmd("swaylock' not in output
+
 
 # ─── Section: window rules ────────────────────────────────────────────────────
 
