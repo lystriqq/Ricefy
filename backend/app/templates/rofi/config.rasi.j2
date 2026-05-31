@@ -4,7 +4,7 @@
 {%- set _pos_num = {"left": 7, "center": 0, "right": 3} -%}
 {%- set _modi    = {"launcher": "drun,run", "dmenu": "dmenu", "drun": "drun", "window": "window"} -%}
 {%- set radius   = [config.wm.rounding // 2, 8] | min -%}
-{%- set icon_size = (config.font.size * 2) -%}
+{%- set icon_size = config.font.size -%}
 {%- set loc_str  = _pos_str[config.launcher.position] -%}
 {%- set loc_num  = _pos_num[config.launcher.position] -%}
 {%- set modi_str = _modi[config.launcher.mode] -%}
@@ -20,6 +20,7 @@ configuration {
     disable-history:     false;
     hide-scrollbar:      true;
     sidebar-mode:        false;
+    separator-style:     "none";
 }
 
 /* ─── Global variables ───────────────────────────────────────────────────── */
@@ -82,6 +83,14 @@ entry {
     text-color:          @foreground;
     placeholder:         "Search...";
     placeholder-color:   @border-color;
+}
+
+/* ─── Separator (hidden) ─────────────────────────────────────────────────── */
+
+separator {
+    background-color:    transparent;
+    border:              0;
+    height:              0px;
 }
 
 /* ─── Listview ───────────────────────────────────────────────────────────── */

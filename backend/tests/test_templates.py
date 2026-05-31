@@ -1293,7 +1293,7 @@ class TestSddmQmlRenders:
 
     def test_username_field(self, jinja_env, sddm_cfg):
         out = render_sddm_qml(jinja_env, sddm_cfg)
-        assert "usernameInput" in out
+        assert "userModel.lastUser" in out
 
     def test_password_field(self, jinja_env, sddm_cfg):
         out = render_sddm_qml(jinja_env, sddm_cfg)
