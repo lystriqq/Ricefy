@@ -1124,7 +1124,7 @@ class TestHyprlockClock:
     def test_clock_absent_when_disabled(self, jinja_env, hyprlock_config):
         hyprlock_config.lockscreen.clock = False
         out = render_hyprlock(jinja_env, hyprlock_config)
-        assert "label {" not in out
+        assert "cmd[update:1000]" not in out
 
     def test_date_format_injected(self, jinja_env, hyprlock_config):
         hyprlock_config.lockscreen.date_format = "%d/%m/%Y"
