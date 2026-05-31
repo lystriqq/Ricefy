@@ -20,11 +20,6 @@ hl.monitor({
 -- ─── Autostart ───────────────────────────────────────────────────────────────
 
 hl.on("hyprland.start", function ()
-{% if config.lockscreen.kind == "hyprlock" %}
-    hl.exec_cmd("hyprlock")
-{% elif config.lockscreen.kind == "swaylock" %}
-    hl.exec_cmd("swaylock -f")
-{% endif %}
     hl.exec_cmd("waybar")
     hl.exec_cmd("dunst")
 {% if config.wm.wallpaper_image %}
@@ -130,6 +125,7 @@ hl.bind(mod .. " + Q",      hl.dsp.window.close())
 hl.bind(mod .. " + M",      hl.dsp.exit())
 hl.bind(mod .. " + E",      hl.dsp.exec_cmd(filemanager))
 hl.bind(mod .. " + R",      hl.dsp.exec_cmd(launcher))
+hl.bind(mod .. " + L",      hl.dsp.exec_cmd("{% if config.lockscreen.kind == 'swaylock' %}swaylock -f{% elif config.lockscreen.kind == 'hyprlock' %}hyprlock{% endif %}"))
 hl.bind(mod .. " + V",      hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mod .. " + F",      hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mod .. " + P",      hl.dsp.window.pseudo({ action = "toggle" }))

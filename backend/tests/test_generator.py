@@ -251,12 +251,12 @@ class TestZipContentsLockscreen:
         finally:
             zip_path.unlink(missing_ok=True)
 
-    def test_sddm_absent_when_hyprlock(self, config):
+    def test_sddm_always_present(self, config):
         zip_path = generate_rice(config)
         try:
             names = _names(zip_path)
-            assert "sddm/theme.conf" not in names
-            assert "sddm/Main.qml" not in names
+            assert "sddm/theme.conf" in names
+            assert "sddm/Main.qml" in names
         finally:
             zip_path.unlink(missing_ok=True)
 

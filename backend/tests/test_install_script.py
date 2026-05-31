@@ -214,26 +214,19 @@ class TestLockscreenPackage:
         assert "Main.qml" in out
         assert "theme.conf" in out
 
-    def test_sddm_autologin_with_hyprlock(self, jinja_env):
+    def test_sddm_theme_always_with_hyprlock(self, jinja_env):
         out = render(jinja_env, _base())
-        assert "[Autologin]" in out
-        assert "Session=hyprland" in out
+        assert "sddm.conf.d" in out
+        assert "Main.qml" in out
+        assert "theme.conf" in out
 
-    def test_sddm_autologin_with_swaylock(self, jinja_env):
+    def test_sddm_theme_always_with_swaylock(self, jinja_env):
         out = render(jinja_env, _base(lockscreen=SwaylockConfig(
             kind="swaylock", theme="minimal", color="#1d2021",
             blur=True, clock=True, layout="center", layout_y="center",
         )))
-        assert "[Autologin]" in out
-        assert "Session=hyprland" in out
-
-    def test_no_sddm_autologin_with_sddm(self, jinja_env):
-        out = render(jinja_env, _base(lockscreen=SddmConfig(
-            kind="sddm", theme="simple", background_color="#1d2021",
-            font="Geist Sans", show_logo=True, blur=False, blur_size=6,
-            layout="center", layout_y="center",
-        )))
-        assert "[Autologin]" not in out
+        assert "sddm.conf.d" in out
+        assert "Main.qml" in out
 
 
 # ─── SDDM systemd service ─────────────────────────────────────────────────────

@@ -65,11 +65,10 @@ def _write_files(config: RiceConfig, out_dir: Path) -> None:
     elif config.lockscreen.kind == "swaylock":
         _write(out_dir / "swaylock" / "swaylock.conf",
                render_template("swaylock/swaylock.conf.j2", ctx))
-    else:
-        _write(out_dir / "sddm" / "theme.conf",
-               render_template("sddm/theme.conf.j2", ctx))
-        _write(out_dir / "sddm" / "Main.qml",
-               render_template("sddm/Main.qml.j2", ctx))
+    _write(out_dir / "sddm" / "theme.conf",
+           render_template("sddm/theme.conf.j2", ctx))
+    _write(out_dir / "sddm" / "Main.qml",
+           render_template("sddm/Main.qml.j2", ctx))
 
 
 def _create_zip(content_dir: Path, zip_path: Path) -> None:
