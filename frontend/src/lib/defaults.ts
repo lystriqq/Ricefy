@@ -1,0 +1,106 @@
+import type {
+  RiceConfig,
+  AppLauncherConfig,
+  LockScreenConfig,
+  LauncherKind,
+  LockKind,
+} from "@/types/rice-config";
+
+export const DEFAULT_RICE_CONFIG: RiceConfig = {
+  name: "My Rice",
+  colors: {
+    accent: "#7c6f64",
+    background: "#1d2021",
+    foreground: "#ebdbb2",
+    border: "#3c3836",
+    surface: "#282828",
+  },
+  font: {
+    heading_family: "Geist Sans",
+    body_family: "Geist Sans",
+    mono_family: "JetBrains Mono",
+    size: 12,
+  },
+  wm: {
+    kind: "hyprland",
+    gaps_in: 5,
+    gaps_out: 10,
+    border_size: 2,
+    rounding: 8,
+    active_opacity: 1.0,
+    inactive_opacity: 0.9,
+    blur: true,
+    blur_size: 6,
+    animations: true,
+    shadow: true,
+    wallpaper_tool: "hyprpaper",
+  },
+  bar: {
+    kind: "waybar",
+    position: "top",
+    height: 32,
+    spacing: 8,
+    modules_left: ["hyprland/workspaces"],
+    modules_center: ["clock"],
+    modules_right: ["battery", "network", "pulseaudio"],
+    show_icons: true,
+    show_labels: true,
+  },
+  terminal: {
+    kind: "kitty",
+    font_family: "JetBrains Mono",
+    font_size: 12,
+    padding_x: 12,
+    padding_y: 8,
+    cursor_shape: "block",
+    cursor_blink: true,
+  },
+  launcher: {
+    kind: "rofi",
+    mode: "drun",
+    width: 600,
+    lines: 10,
+    position: "center",
+    show_icons: true,
+  },
+  lockscreen: {
+    kind: "hyprlock",
+    theme: "centered",
+    background_color: "#1d2021",
+    blur: true,
+    blur_size: 10,
+    clock: true,
+    date_format: "%H:%M",
+    layout: "center",
+    layout_y: "center",
+  },
+};
+
+export const DEFAULT_LAUNCHERS: Record<LauncherKind, AppLauncherConfig> = {
+  rofi: DEFAULT_RICE_CONFIG.launcher,
+  wofi: { kind: "wofi", width: 600, height: 400, show_icons: true },
+};
+
+export const DEFAULT_LOCKSCREENS: Record<LockKind, LockScreenConfig> = {
+  hyprlock: DEFAULT_RICE_CONFIG.lockscreen,
+  swaylock: {
+    kind: "swaylock",
+    theme: "minimal",
+    color: "#000000",
+    blur: true,
+    clock: true,
+    layout: "center",
+    layout_y: "center",
+  },
+  sddm: {
+    kind: "sddm",
+    theme: "simple",
+    background_color: "#1d2021",
+    font: "Geist Sans",
+    show_logo: true,
+    blur: false,
+    blur_size: 6,
+    layout: "center",
+    layout_y: "center",
+  },
+};
