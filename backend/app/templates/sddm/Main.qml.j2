@@ -127,10 +127,9 @@ Rectangle {
                         ? Qt.darker("{{ config.colors.accent }}", 1.2)
                         : "{{ config.colors.accent }}"
                     radius: {{ [radius - 2, 2] | max }}
-                    Behavior on color { ColorAnimation { duration: 100 } }
                 }
 
-                contentItem: Text {
+                contentItem: Label {
                     text: loginButton.text
                     color: "{{ config.colors.background }}"
                     font.family: "{{ config.lockscreen.font }}"
