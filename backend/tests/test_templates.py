@@ -60,6 +60,7 @@ class TestHyprlandTemplateRenders:
     def test_monitor_uses_own_function(self, jinja_env, default_config):
         output = render_hyprland(jinja_env, default_config)
         assert "hl.monitor(" in output
+        assert 'output = ""' in output
         assert "resolution = " in output
         assert "position = " in output
 
@@ -171,9 +172,10 @@ class TestInputSection:
         assert "sensitivity" in output
         assert "touchpad" in output
 
-    def test_gestures_section(self, jinja_env, default_config):
+    def test_window_rules_use_bool(self, jinja_env, default_config):
         output = render_hyprland(jinja_env, default_config)
-        assert "workspace_swipe" in output
+        assert "float = true" in output
+        assert "float = {}" not in output
 
 
 # ─── Section: keybindings ────────────────────────────────────────────────────
