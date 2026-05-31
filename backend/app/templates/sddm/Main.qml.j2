@@ -115,27 +115,27 @@ Rectangle {
             }
 
             // Login button
-            Button {
+            Rectangle {
                 id: loginButton
                 Layout.fillWidth: true
                 height: 40
-                text: "Sign in"
-                onClicked: sddm.login(usernameInput.text, passwordInput.text, sessionIndex)
+                color: loginArea.pressed
+                    ? Qt.darker("{{ config.colors.accent }}", 1.2)
+                    : "{{ config.colors.accent }}"
+                radius: {{ [radius - 2, 2] | max }}
 
-                background: Rectangle {
-                    color: loginButton.pressed
-                        ? Qt.darker("{{ config.colors.accent }}", 1.2)
-                        : "{{ config.colors.accent }}"
-                    radius: {{ [radius - 2, 2] | max }}
+                MouseArea {
+                    id: loginArea
+                    anchors.fill: parent
+                    onClicked: sddm.login(usernameInput.text, passwordInput.text, sessionIndex)
                 }
 
-                contentItem: Label {
-                    text: loginButton.text
+                Label {
+                    anchors.centerIn: parent
+                    text: "Sign in"
                     color: "{{ config.colors.background }}"
                     font.family: "{{ config.lockscreen.font }}"
                     font.pixelSize: {{ config.font.size }}
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                 }
             }
 
