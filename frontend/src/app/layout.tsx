@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         className={`${geist.variable} font-sans h-screen flex flex-col`}
       >
         <Header />
-        <main className="flex flex-1 min-h-0 flex-col">{children}</main>
+        <main className="flex flex-1 min-h-0 flex-col overflow-y-auto">{children}</main>
         <Footer />
         <Toaster theme="dark" position="bottom-right" />
       </body>
