@@ -71,6 +71,11 @@ export function ConfigPreview() {
         </div>
       );
     }
+    if (m === "custom/separator") {
+      return (
+        <span key={m} className="shrink-0" style={{ color: colors.border }}>|</span>
+      );
+    }
     return (
       <span key={m} className="shrink-0 whitespace-nowrap" style={{ color }}>
         {renderModuleText(m as Parameters<typeof renderModuleText>[0], waybar.show_icons, waybar.show_labels)}
@@ -96,7 +101,7 @@ export function ConfigPreview() {
         {isBarTop && (
           <div
             className="flex shrink-0 items-center px-2"
-            style={{ backgroundColor: colors.surface, height: `${barHeight}px`, borderBottom: `1px solid ${colors.border}`, fontFamily: font.body_family, fontSize: "8px" }}
+            style={{ backgroundColor: colors.surface, height: `${barHeight}px`, borderBottom: `1px solid ${colors.border}`, fontFamily: font.mono_family, fontSize: "8px" }}
           >
             <div className="flex flex-1 items-center gap-1 overflow-hidden">
               {waybar.modules_left.map((m) => barChip(m, colors.foreground))}
@@ -170,7 +175,7 @@ export function ConfigPreview() {
         {!isBarTop && (
           <div
             className="flex shrink-0 items-center px-2"
-            style={{ backgroundColor: colors.surface, height: `${barHeight}px`, borderTop: `1px solid ${colors.border}`, fontFamily: font.body_family, fontSize: "8px" }}
+            style={{ backgroundColor: colors.surface, height: `${barHeight}px`, borderTop: `1px solid ${colors.border}`, fontFamily: font.mono_family, fontSize: "8px" }}
           >
             <div className="flex flex-1 items-center gap-1 overflow-hidden">
               {waybar.modules_left.map((m) => barChip(m, colors.foreground))}
@@ -247,13 +252,13 @@ export function ConfigPreview() {
     const hasClock =
       lock.kind === "hyprlock" ? (lock as HyprlockConfig).clock :
       lock.kind === "swaylock" ? (lock as SwaylockConfig).clock :
-      false;
+      true;
     const theme =
       lock.kind === "hyprlock" ? (lock as HyprlockConfig).theme :
       lock.kind === "swaylock" ? (lock as SwaylockConfig).theme :
       (lock as SddmConfig).theme;
     const showLogo = lock.kind === "sddm" ? (lock as SddmConfig).show_logo : false;
-    const lockFont = lock.kind === "sddm" ? (lock as SddmConfig).font : font.body_family;
+    const lockFont = lock.kind === "sddm" ? (lock as SddmConfig).font : font.heading_family;
     const bgImage =
       lock.kind === "hyprlock" ? (lock as HyprlockConfig).background_image :
       lock.kind === "swaylock" ? (lock as SwaylockConfig).background_image :
@@ -288,14 +293,12 @@ export function ConfigPreview() {
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", fontFamily: lockFont }}>
           {showLogo && <p style={{ fontSize: "9px", color: colors.foreground + "90", fontWeight: 600, letterSpacing: "0.05em" }}>arch-machine</p>}
           {hasClock && <p style={{ fontSize: "18px", fontWeight: 700, color: colors.foreground, lineHeight: 1 }}>14:30</p>}
-          <div style={{ width: "80px", height: "14px", borderRadius: "4px", border: `1px solid ${colors.foreground + "40"}`, backgroundColor: "rgba(0,0,0,0.3)", display: "flex", alignItems: "center", padding: "0 6px" }}>
-            <span style={{ fontSize: "7px", color: colors.foreground + "40" }}>{lock.kind === "sddm" ? "username" : "password"}</span>
-          </div>
           {lock.kind === "sddm" && (
-            <div style={{ width: "80px", height: "14px", borderRadius: "4px", backgroundColor: colors.accent, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "7px", color: colors.background, fontWeight: 600 }}>Login</span>
-            </div>
+            <p style={{ fontSize: "7px", color: colors.foreground + "40", letterSpacing: "0.03em" }}>user</p>
           )}
+          <div style={{ width: "80px", height: "14px", borderRadius: `${Math.min(wm.rounding, 6)}px`, border: `1px solid ${colors.foreground + "40"}`, backgroundColor: "rgba(0,0,0,0.3)", display: "flex", alignItems: "center", padding: "0 6px" }}>
+            <span style={{ fontSize: "7px", color: colors.foreground + "40" }}>password</span>
+          </div>
         </div>
         <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "7px", color: colors.foreground + "40" }}>
           {lock.kind} · {theme}
