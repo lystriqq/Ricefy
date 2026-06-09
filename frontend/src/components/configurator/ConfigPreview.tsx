@@ -253,10 +253,6 @@ export function ConfigPreview() {
       lock.kind === "hyprlock" ? (lock as HyprlockConfig).clock :
       lock.kind === "swaylock" ? (lock as SwaylockConfig).clock :
       true;
-    const theme =
-      lock.kind === "hyprlock" ? (lock as HyprlockConfig).theme :
-      lock.kind === "swaylock" ? (lock as SwaylockConfig).theme :
-      (lock as SddmConfig).theme;
     const showLogo = lock.kind === "sddm" ? (lock as SddmConfig).show_logo : false;
     const lockFont = lock.kind === "sddm" ? (lock as SddmConfig).font : font.heading_family;
     const bgImage =
@@ -290,9 +286,13 @@ export function ConfigPreview() {
         {hasBlur && (
           <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(6px)", backgroundColor: "rgba(0,0,0,0.3)" }} />
         )}
-        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", fontFamily: lockFont }}>
-          {showLogo && <p style={{ fontSize: "9px", color: colors.foreground + "90", fontWeight: 600, letterSpacing: "0.05em" }}>arch-machine</p>}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", fontFamily: lockFont }}>
           {hasClock && <p style={{ fontSize: "18px", fontWeight: 700, color: colors.foreground, lineHeight: 1 }}>14:30</p>}
+          {hasClock && <p style={{ fontSize: "7px", color: colors.foreground + "80", letterSpacing: "0.02em", marginBottom: "2px" }}>Monday, June 9</p>}
+          {showLogo && <p style={{ fontSize: "9px", color: colors.accent, letterSpacing: "0.05em", opacity: 0.7 }}>{config.name}</p>}
+          {lock.kind === "sddm" && (
+            <div style={{ width: "32px", height: "1.5px", backgroundColor: colors.accent, opacity: 0.6, margin: "3px 0" }} />
+          )}
           {lock.kind === "sddm" && (
             <p style={{ fontSize: "7px", color: colors.foreground + "40", letterSpacing: "0.03em" }}>user</p>
           )}
@@ -300,8 +300,8 @@ export function ConfigPreview() {
             <span style={{ fontSize: "7px", color: colors.foreground + "40" }}>password</span>
           </div>
         </div>
-        <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "7px", color: colors.foreground + "40" }}>
-          {lock.kind} · {theme}
+        <div style={{ position: "absolute", bottom: "4px", right: "6px", fontSize: "7px", color: colors.foreground + "20" }}>
+          ricefy.org
         </div>
       </div>
     );

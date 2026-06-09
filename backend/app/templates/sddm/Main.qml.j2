@@ -104,7 +104,7 @@ Rectangle {
         Rectangle {
             id: accentLine
             anchors.top: dateLabel.bottom
-            anchors.topMargin: {% if config.lockscreen.show_logo | default(false) %}32{% else %}20{% endif %}
+            anchors.topMargin: {{ 32 if (config.lockscreen.show_logo | default(false)) else 20 }}
             anchors.horizontalCenter: parent.horizontalCenter
             width: 40
             height: 2
